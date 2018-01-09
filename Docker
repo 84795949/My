@@ -1,0 +1,142 @@
+ yum remove docker \
+                  docker-common \
+                  docker-selinux \
+                  docker-engine
+
+yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+yum-config-manager --enable docker-ce-edge
+
+yum install -y docker-ce
+
+systemctl enable docker
+
+systemctl start docker
+
+docker -v
+
+换阿里云的源仓库，下载镜像会加速
+ cp -n /lib/systemd/system/docker.service /etc/systemd/system/docker.service
+ sed -i "s|ExecStart=/usr/bin/docker daemon|ExecStart=/usr/bin/docker daemon --registry-mirror=https://xnfwm35f.mirror.aliyuncs.com|g" /etc/systemd/system/docker.service
+ systemctl daemon-reload
+ systemctl restart docker
+
+
+
+docker search ubuntu
+
+docker pull ubuntu
+
+[root@localhost ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              00fd29ccc6f1        3 weeks ago         111MB
+
+docker run -it ubuntu
+
+root@13161f8b2241:/# cat /etc/lsb-release 
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.3 LTS"
+在容器中exit退出后重新进入
+
+[root@localhost ~]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                          PORTS               NAMES
+13d51addc616        ubuntu              "/bin/bash"         53 seconds ago      Exited (0) 49 seconds ago                          xenodochial_aryabhata
+看到status是exited的，使用下面命令启动该容器
+[root@localhost ~]# docker container start 13161f8b2241
+13161f8b2241
+[root@localhost ~]# docker container ls -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+13161f8b2241        ubuntu              "/bin/bash"         11 minutes ago      Up 4 seconds                            xenodochial_aryabhata
+重新进入：
+[root@localhost ~]# docker attach 13161f8b2241
+root@13161f8b2241:/# 
+root@13161f8b2241:/# exit
+exit
+
+[root@localhost ~]# docker container start 13161f8b2241
+[root@localhost ~]# docker attach 13161f8b2241
+
+进入容器给apt-get升级仓库
+root@13161f8b2241:/# apt-get update
+开始安装JDK8.0
+
+root@13161f8b2241:/# apt-get install software-properties-common -y
+root@13161f8b2241:/# add-apt-repository ppa:webupd8team/java
+root@13161f8b2241:/# apt update
+root@13161f8b2241:/# apt-get install -y oracle-java8-installer oracle-java8-set-default
+root@13161f8b2241:/# cat << EOF >> ~/.bashrc
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
+EOF
+root@13161f8b2241:/# source ~/.bashrc
+root@13161f8b2241:/# echo $JAVA_HOME
+/usr/lib/jvm/java-8-oracle
+root@13161f8b2241:/# java -version
+java version "1.8.0_151"
+Java(TM) SE Runtime Environment (build 1.8.0_151-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.151-b12, mixed mode)
+root@13161f8b2241:/# exit
+exit
+
+查看对该容器做出的改动
+[root@localhost ~]# docker diff 13161f8b2241|more 
+
+
+生成镜像
+[root@localhost ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              00fd29ccc6f1        3 weeks ago         111MB
+[root@localhost ~]# docker commit 13161f8b2241 ubuntu/java
+sha256:a84cd61fb63094f3e74fe49ba39b1ef31d2eb57a8bd8177e5abb4ea96d0c9318
+[root@localhost ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu/java         latest              a84cd61fb630        14 seconds ago      920MB
+ubuntu              latest              00fd29ccc6f1        3 weeks ago         111MB
+
+删除当前容器
+[root@localhost ~]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+13161f8b2241        ubuntu              "/bin/bash"         About an hour ago   Exited (0) 22 minutes ago                       xenodochial_aryabhata
+[root@localhost ~]# docker rm 13161f8b2241
+13161f8b2241
+
+运行生成的ubuntu/java
+[root@localhost ~]# docker run -it ubuntu/java /bin/bash
+root@a1b7c0f320b1:/# java -version
+java version "1.8.0_151"
+Java(TM) SE Runtime Environment (build 1.8.0_151-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.151-b12, mixed mode)
+exit
+把image导出到tar文件
+[root@localhost ~]# docker save -o /home/ubuntu_java.tar ubuntu/java
+[root@localhost ~]# ll /home/ubuntu_java.tar -h
+-rw-------. 1 root root 892M 1月   9 11:32 /home/ubuntu_java.tar
+传输到其他服务器上
+
+导入:
+docker load -i ubuntu_java.tar
+
+
+
+
+
+导出容器
+[root@localhost ~]# docker container ls -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+13161f8b2241        ubuntu              "/bin/bash"         About an hour ago   Exited (0) 53 seconds ago                       xenodochial_aryabhata
+[root@localhost ~]# docker export 13161f8b2241 > ubuntu_java.tar
+[root@localhost ~]# ll ubuntu_java.tar -h
+-rw-r--r--. 1 root root 868M 1月   9 10:59 ubuntu_java.tar
+导入容器
+cat ubuntu_java.tar | docker import - test/ubuntu:v1.0
+
