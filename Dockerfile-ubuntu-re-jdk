@@ -1,0 +1,36 @@
+FROM ubuntu
+ADD jdk-8u151-linux-x64.tar.gz /usr/local/
+COPY run.sh /usr/bin/run.sh
+COPY sources.list /opt/sources.list
+#ENV JAVA_HOME=/usr/local/jdk1.8.0_151 
+#ENV JRE_HOME=$JAVA/jre 
+#ENV CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+#ENV PATH=${JAVA_HOME}/bin:$PATH
+WORKDIR /opt
+RUN apt-get clean \
+    && rm -rf /etc/apt/sources.list \
+    && mv sources.list /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install -y vim wget sudo software-properties-common \
+    && add-apt-repository ppa:ubuntu-toolchain-r/test -y\
+    && apt-get update \
+    && apt-get install -y gcc-5 g++-5 \
+    && ln -s /usr/bin/gcc-5 /usr/bin/gcc \
+    && ln -s /usr/bin/g++-5 /usr/bin/g++ \
+    && wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.4.2.tar.gz \
+    && tar zxvf elasticsearch-5.4.2.tar.gz \
+    && useradd -m es \
+    && echo 'JAVA_HOME=/usr/local/jdk1.8.0_151' >> /home/es/.bashrc \
+    && echo 'JRE_HOME=$JAVA/jre' >> /home/es/.bashrc \
+    && echo 'CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib' >> /home/es/.bashrc \
+    && echo 'PATH=${JAVA_HOME}/bin:$PATH' >> /home/es/.bashrc \
+    && source /home/es/.bashrc \
+    && mkdir /home/es/code /home/es/data /home/es/logs \
+    && mv -f elasticsearch-5.4.2  /home/es/code/elasticsearch-node1
+RUN echo 'cluster.name: my-application \nnode.name: node-1 \npath.data: /home/es/data \npath.logs: /home/es/logs \nnetwork.host: 0.0.0.0 \nhttp.port: 9200' >> /home/es/code/elasticsearch-node1/config/elasticsearch.yml \
+    && sed -i 's/-Xms2g/-Xms512m/' /home/es/code/elasticsearch-node1/config/jvm.options \
+    && sed -i 's/-Xmx2g/-Xmx512m/' /home/es/code/elasticsearch-node1/config/jvm.options \
+    && chown es:es /home/es -R \
+    && echo '*              soft    nproc          65536\n*              hard    nproc          65536\n*              soft    nofile          65536\n*              hard    nofile          65536' >> /etc/security/limits.conf \
+    && echo 'vm.max_map_count= 262144' >> /etc/sysctl.conf
+EXPOSE 9200
